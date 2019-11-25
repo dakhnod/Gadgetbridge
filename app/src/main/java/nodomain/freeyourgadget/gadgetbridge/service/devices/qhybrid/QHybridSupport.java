@@ -68,6 +68,7 @@ public class QHybridSupport extends QHybridBaseSupport {
     public static final String QHYBRID_COMMAND_OVERWRITE_BUTTONS = "nodomain.freeyourgadget.gadgetbridge.Q_OVERWRITE_BUTTONS";
 
     private static final String QHYBRID_ACTION_SET_ACTIVITY_HAND = "nodomain.freeyourgadget.gadgetbridge.Q_SET_ACTIVITY_HAND";
+    private static final String QHYBRID_ACTION_NOTIFICATION = "nodomain.freeyourgadget.gadgetbridge.Q_NOTIFICATION";
 
     public static final String QHYBRID_EVENT_SETTINGS_UPDATED = "nodomain.freeyourgadget.gadgetbridge.Q_SETTINGS_UPDATED";
     public static final String QHYBRID_EVENT_FILE_UPLOADED = "nodomain.freeyourgadget.gadgetbridge.Q_FILE_UPLOADED";
@@ -206,6 +207,7 @@ public class QHybridSupport extends QHybridBaseSupport {
 
         IntentFilter globalFilter = new IntentFilter();
         globalFilter.addAction(QHYBRID_ACTION_SET_ACTIVITY_HAND);
+        globalFilter.addAction(QHYBRID_ACTION_NOTIFICATION);
         BroadcastReceiver globalCommandReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -226,6 +228,27 @@ public class QHybridSupport extends QHybridBaseSupport {
                         } catch (Exception e) {
                             e.printStackTrace();
                             logger.debug("trash extra should be number 0.0-1.0");
+                        }
+                        break;
+                    }
+
+                    case QHYBRID_ACTION_NOTIFICATION: {
+                        try {
+                            String pkg = String.valueOf(intent.getExtras().get("EXTRA_PACKAGE"));
+
+                            watchAdapter.playNotification(new NotificationConfiguration(
+                                    (short)-1,
+                                    (short)-1,
+                                    pkg,
+                                    null,
+                                    false,
+                                    PlayNotificationRequest.VibrationType.NO_VIBE,
+                                    -1
+                            ));
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            logger.debug("exception on case QHYBRID_ACTION_NOTIFICATION");
                         }
                         break;
                     }

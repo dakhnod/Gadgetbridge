@@ -402,7 +402,6 @@ public class ConfigActivity extends AbstractGBActivity {
                     }else{
                         buttonConfig_ = new JSONArray(buttonJson);
                     }
-
                     final JSONArray buttonConfig = buttonConfig_;
 
                     LinearLayout buttonLayout = findViewById(R.id.buttonConfigLayout);
@@ -416,7 +415,7 @@ public class ConfigActivity extends AbstractGBActivity {
                         final int currentIndex = i;
                         String configName = buttonConfig.getString(i);
                         TextView buttonTextView = new TextView(ConfigActivity.this);
-                        buttonTextView.setTextColor(Color.WHITE);
+                        buttonTextView.setTextColor(Color.BLUE);
                         buttonTextView.setTextSize(20);
                         try {
                             ConfigPayload payload = ConfigPayload.valueOf(configName);

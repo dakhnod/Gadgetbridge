@@ -13,6 +13,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.text.TextWatcher;
+import android.text.Editable;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,7 +59,7 @@ public class TimePicker extends AlertDialog.Builder {
     }
 
     private void initGraphics(Context context){
-        int w = (int) (((WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth() * 0.8);
+        int w = (int) (((WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth() * 0.7);
         height = w;
         width = w;
         radius = (int) (w * 0.06);
@@ -78,6 +81,25 @@ public class TimePicker extends AlertDialog.Builder {
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.addView(pickerView);
+
+        //Show package and make it editable
+        EditText pkgText = new EditText(context);
+        pkgText.setText(settings.getPackageName());
+
+        pkgText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                settings.setPackageName(s.toString());
+                settings.setAppName(s.toString()); //Set AppName to PackageName to make clear this is a edited
+            }
+        });
+        layout.addView(pkgText);
 
         CheckBox box = new CheckBox(context);
         box.setText("Respect silent mode");
